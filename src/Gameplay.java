@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +34,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	private int delay = 100;
 	
 	private int moves = 0;
+	
+	private int score = 0;
 	
 	private ImageIcon snakeimage;
 
@@ -70,8 +73,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 			snakeYlength[2] = 100;
 			snakeYlength[1] = 100;
 			snakeYlength[0] = 100;
-
-
 		}
 		
 		//Draw title image border :)
@@ -90,6 +91,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		g.setColor(Color.GREEN);
 		g.fillRect(25, 75, 850, 575);
 		
+		//Draw the scoreboard
+		g.setColor(Color.white);
+		g.setFont(new Font("arial", Font.PLAIN, 14));
+		g.drawString("Score: " + score, 780, 32);
+		
+		//Draw size of snake
+		g.setColor(Color.white);
+		g.setFont(new Font("arial", Font.PLAIN, 14));
+		g.drawString("Size: " + lengthOfSnake, 780, 52);
+				
 		rightmouth = new ImageIcon("assets/rightmouth.png");
 		rightmouth.paintIcon(this, g, snakeXlength[0], snakeYlength[0]);
 		
@@ -126,6 +137,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 				
 		if((enemyXpos[xpos] == snakeXlength[0] && enemyYpos[ypos] == snakeYlength[0]))
 		{
+			score++;
 			lengthOfSnake++;
 			xpos = random.nextInt(34);
 			ypos = random.nextInt(23);
@@ -133,6 +145,22 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		
 		enemyimage.paintIcon(this, g, enemyXpos[xpos], enemyYpos[ypos]);
 				
+		for(int i = 1; i<lengthOfSnake; i++)
+			if(snakeXlength[i] == snakeXlength[0] && snakeYlength[i] == snakeYlength[0])
+			{
+				right = false;
+				left = false;
+				down = false;
+				up = false; 
+				
+				g.setColor(Color.white);
+				g.setFont(new Font("arial", Font.BOLD, 50));
+				g.drawString("Game over", 300, 300);
+				
+				g.setFont(new Font("arial", Font.BOLD, 20));
+				g.drawString("Tap SPACE to RESTART", 315, 340);
+			}
+		
 		g.dispose();
 	}
 
@@ -144,6 +172,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_SPACE)
+		{
+			moves = 0;
+			score = 0;
+			lengthOfSnake = 3;
+			repaint();
+		}
+		
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{
 			moves++;
