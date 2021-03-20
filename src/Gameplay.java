@@ -19,6 +19,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	private boolean right = false;
 	private boolean up = false;
 	private boolean down = false;
+	private boolean gameOver = false;
 	
 	private ImageIcon rightmouth;
 	private ImageIcon leftmouth;
@@ -148,6 +149,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		for(int i = 1; i<lengthOfSnake; i++)
 			if(snakeXlength[i] == snakeXlength[0] && snakeYlength[i] == snakeYlength[0])
 			{
+				gameOver = true;
 				right = false;
 				left = false;
 				down = false;
@@ -172,15 +174,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_SPACE)
+		if(e.getKeyCode() == KeyEvent.VK_SPACE && gameOver)
 		{
+			gameOver = false;
 			moves = 0;
 			score = 0;
 			lengthOfSnake = 3;
 			repaint();
 		}
 		
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT && !gameOver)
 		{
 			moves++;
 			right = true; 
@@ -193,7 +196,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 			down = false;
 			up = false; 
 		}
-		if(e.getKeyCode() == KeyEvent.VK_LEFT)
+		if(e.getKeyCode() == KeyEvent.VK_LEFT && !gameOver)
 		{
 			moves++;
 			left = true; 
@@ -206,7 +209,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 			down = false;
 			up = false; 
 		}
-		if(e.getKeyCode() == KeyEvent.VK_UP)
+		if(e.getKeyCode() == KeyEvent.VK_UP && !gameOver)
 		{
 			moves++;
 			up = true; 
@@ -219,7 +222,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 			left = false;
 			right = false; 
 		}
-		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+		if(e.getKeyCode() == KeyEvent.VK_DOWN && !gameOver)
 		{
 			moves++;
 			down = true; 
